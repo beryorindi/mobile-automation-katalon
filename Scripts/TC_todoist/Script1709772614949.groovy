@@ -88,8 +88,8 @@ Mobile.closeApplication()
 
 Mobile.comment('Then task that created via Mobile is displayed in API')
 
-WS.sendRequestAndVerify(findTestObject('API/Task by project id', [('projectId') : GlobalVariable.projectId]))
+WS.sendRequestAndVerify(findTestObject('API/Get Task by project id', [('projectId') : GlobalVariable.projectId]))
 
 'Delete Project for clean the data'
-WS.sendRequestAndVerify(findTestObject('API/Project by id', [('projectId') : GlobalVariable.projectId]))
+WS.sendRequestAndVerify(findTestObject('API/Delete Project by id', [('projectId') : GlobalVariable.projectId]))
 
