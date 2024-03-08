@@ -11,17 +11,17 @@
       <authorizationInfo>
          <entry>
             <key>bearerToken</key>
-            <value>91e938a58b3fe819cb5b78ffae6337cd5983cd3b</value>
+            <value>${token}</value>
          </entry>
       </authorizationInfo>
       <authorizationType>Bearer</authorizationType>
    </authorizationRequest>
-   <autoUpdateContent>true</autoUpdateContent>
+   <autoUpdateContent>false</autoUpdateContent>
    <connectionTimeout>0</connectionTimeout>
    <followRedirects>false</followRedirects>
    <httpBody></httpBody>
    <httpBodyContent>{
-  &quot;text&quot;: &quot;{\&quot;name\&quot;: \&quot;Test from API\&quot;}&quot;,
+  &quot;text&quot;: &quot;{\&quot;name\&quot;: \&quot;${projectName}\&quot;}&quot;,
   &quot;contentType&quot;: &quot;application/json&quot;,
   &quot;charset&quot;: &quot;UTF-8&quot;
 }</httpBodyContent>
@@ -39,8 +39,8 @@
       <matchCondition>equals</matchCondition>
       <name>Authorization</name>
       <type>Main</type>
-      <value>Bearer 91e938a58b3fe819cb5b78ffae6337cd5983cd3b</value>
-      <webElementGuid>d703d8d1-80e6-4cf7-9181-b236519d0981</webElementGuid>
+      <value>Bearer ${token}</value>
+      <webElementGuid>a375fde9-8c5e-4a0e-89db-ddb89f387477</webElementGuid>
    </httpHeaderProperties>
    <katalonVersion>9.3.1</katalonVersion>
    <maxResponseSize>0</maxResponseSize>
@@ -55,6 +55,20 @@
    <soapServiceFunction></soapServiceFunction>
    <socketTimeout>0</socketTimeout>
    <useServiceInfoFromWsdl>true</useServiceInfoFromWsdl>
+   <variables>
+      <defaultValue>GlobalVariable.token</defaultValue>
+      <description></description>
+      <id>06504495-4c0e-44fb-a1cb-eae885205996</id>
+      <masked>false</masked>
+      <name>token</name>
+   </variables>
+   <variables>
+      <defaultValue>GlobalVariable.projectName</defaultValue>
+      <description></description>
+      <id>c7c1ac55-1977-4102-b093-0278c2091834</id>
+      <masked>false</masked>
+      <name>projectName</name>
+   </variables>
    <verificationScript>import static org.assertj.core.api.Assertions.*
 
 import com.kms.katalon.core.testobject.RequestObject
@@ -68,7 +82,14 @@ import internal.GlobalVariable as GlobalVariable
 RequestObject request = WSResponseManager.getInstance().getCurrentRequest()
 
 ResponseObject response = WSResponseManager.getInstance().getCurrentResponse()
+// Verify response code &amp; project name
 assert response.getStatusCode() == 200
-WS.verifyElementPropertyValue(response, &quot;name&quot;, &quot;Test from API&quot;)</verificationScript>
+WS.verifyElementPropertyValue(response, &quot;name&quot;, GlobalVariable.projectName)
+
+//replace global projectId variable
+def responseText = response.getResponseText()
+def jsonSlurper = new JsonSlurper()
+def object = jsonSlurper.parseText(responseText)
+GlobalVariable.projectId = object.getAt(&quot;id&quot;)</verificationScript>
    <wsdlAddress></wsdlAddress>
 </WebServiceRequestEntity>
