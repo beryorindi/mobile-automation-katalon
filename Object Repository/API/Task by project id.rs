@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WebServiceRequestEntity>
    <description></description>
-   <name>All Task by Project</name>
+   <name>Task by project id</name>
    <tag></tag>
    <elementGuidId>a002e01e-5e93-41be-97c9-5a479e5a5c69</elementGuidId>
    <selectorMethod>XPATH</selectorMethod>

@@ -19,22 +19,21 @@ import org.openqa.selenium.Keys as Keys
 import com.kms.katalon.core.util.internal.PathUtil as PathUtil
 import com.kms.katalon.core.configuration.RunConfiguration as RunConfiguration
 
-not_run: Mobile.comment('When user create project from API')
+Mobile.comment('When user create project from API')
 
-not_run: responseCreateProject = WS.sendRequestAndVerify(findTestObject('API/Create Project', [('token') : GlobalVariable.token
-            , ('projectName') : GlobalVariable.projectName]))
+responseCreateProject = WS.sendRequestAndVerify(findTestObject('API/Create Project', [('token') : GlobalVariable.token, ('projectName') : GlobalVariable.projectName]))
 
-not_run: projectId = WS.getElementPropertyValue(responseCreateProject, 'id')
+projectId = WS.getElementPropertyValue(responseCreateProject, 'id')
 
 'Set global variable project id from response create'
-not_run: GlobalVariable.projectId = projectId
+GlobalVariable.projectId = projectId
 
 Mobile.comment('When user login via Mobile')
 
 'Get full directory\'s path of android application'
 def appPath = PathUtil.relativeToAbsolutePath(GlobalVariable.G_AppPath, RunConfiguration.getProjectDir())
 
-Mobile.startApplication(appPath, false)
+Mobile.startApplication(appPath, true)
 
 Mobile.tap(findTestObject('Mobile Element/Home - Continue with Email'), 20)
 
@@ -89,5 +88,8 @@ Mobile.closeApplication()
 
 Mobile.comment('Then task that created via Mobile is displayed in API')
 
-WS.sendRequestAndVerify(findTestObject('API/All Task by Project', [('project_id') : GlobalVariable.projectId]))
+WS.sendRequestAndVerify(findTestObject('API/Task by project id', [('projectId') : GlobalVariable.projectId]))
+
+'Delete Project for clean the data'
+WS.sendRequestAndVerify(findTestObject('API/Project by id', [('projectId') : GlobalVariable.projectId]))
 
